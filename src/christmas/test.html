@@ -1,0 +1,47 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="format-detection" content="telephone=no"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	<title>js下载</title>
+	<link href="css/style.css" rel="stylesheet">
+</head>
+<body>
+	<input type="button" value="开始下载" id="btn"/>
+	<a href='javascript:;' target="main" id="showlist" style='display:none'>下载</a>
+	<hr>
+	<iframe id="ifr" name='main' src='' width='100%' height='600' frameborder='0'></iframe>
+	<script>
+		var baseurl = 'http://beijingair.sinaapp.com/data/beijing/all/';
+		document.getElementById('btn').onclick = function(){
+			doDownLoad(baseurl);
+		}
+
+		function doDownLoad(baseurl){
+			var num = 0, date, url;
+			setInterval(function(){
+				date = getDateStr(num),
+				url = baseurl + date + '/csv';
+				alert(url);
+				document.getElementById('ifr').setAttribute('src', url);
+				document.getElementById('showlist').click();
+				num--;			
+			}, 1000);
+
+		}
+		function getDateStr(addDayCount) {
+			var dd = new Date();
+			addDayCount = addDayCount ? addDayCount : '';
+			dd.setDate( dd.getDate() + addDayCount );//获取AddDayCount天后的日期
+			var y = dd.getFullYear();
+			var m = dd.getMonth() + 1,//获取当前月份的日期
+				m = m<10 ? '0' + m : m;
+			var d = dd.getDate(),
+				d = d < 10 ? '0' + d : d;
+
+			return y + "" + m + "" + d;
+		}
+	</script>
+</body>
+</html>

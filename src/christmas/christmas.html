@@ -1,0 +1,77 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="format-detection" content="telephone=no"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	<title>飞流送好礼，圣诞乐翻天 - 飞流游戏社区</title>
+	<link href="css/style.css" rel="stylesheet">
+	<script src="lib/zepto.min.js"></script>
+	<script src="lib/threeCanvas.js"></script>
+	<script src="js/snowCanvas.js"></script>
+</head>
+<body>
+	<div class="wrapper" id="page">
+		<div class="banner">
+			<img class="w100" src="images/banner.jpg" alt="">
+		</div>
+		<div class="row tc btnrow">
+			<a href="#" class="btnlink"><img class="downbtn" src="images/downbtn.png" alt="马上下载"></a>
+		</div>
+
+	</div>
+	<script>
+		var sharePic = "http://game.feiliu.com/protest/christmas/images/share.png",
+		shareUrl = "http://game.feiliu.com/protest/christmas/christmas.html",
+		shareTitle = "飞流送好礼，圣诞乐翻天 - 飞流游戏社区",
+		shareTxt = "斗三国抱枕，小海豚玩偶，各种游戏礼包，奖品多到抽不完";
+
+	//给微信设置分享
+	var onBridgeReady = function () {
+		//var appId = '';
+		// 发送给好友;
+		WeixinJSBridge.on('menu:share:appmessage', function(argv){
+			var imgUrl = sharePic;
+			var link = shareUrl;
+			var title = shareTitle;
+			var shareDesc = shareTxt;
+			WeixinJSBridge.invoke('sendAppMessage',{
+			  'img_url' : imgUrl,
+			  'img_width' : '300',
+			  'img_height' : '300',
+			  'link' : link,
+			  'desc' : shareDesc,
+			  'title' : title
+			}, function(res) {
+
+			});
+		});
+
+		// 分享到朋友圈;
+		WeixinJSBridge.on('menu:share:timeline', function(argv){
+			var imgUrl = sharePic;
+			var link = shareUrl;
+			var title = shareTitle;
+			var shareDesc = shareTxt;
+			WeixinJSBridge.invoke('shareTimeline',{
+			  'img_url' : imgUrl,
+			  'img_width' : '300',
+			  'img_height' : '300',
+			  'link' : link,
+			  'desc' : shareDesc,
+			  'title' : title
+			}, function(res) {
+
+			});
+		});
+	}
+    if(document.addEventListener){
+      document.addEventListener('WeixinJSBridgeReady', onBridgeReady, false);
+    } else if(document.attachEvent){
+      document.attachEvent('WeixinJSBridgeReady' , onBridgeReady);
+      document.attachEvent('onWeixinJSBridgeReady' , onBridgeReady);
+    }
+
+	</script>
+</body>
+</html>
