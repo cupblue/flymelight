@@ -1,24 +1,4 @@
-# Aaa
-
-The best jQuery plugin ever.
-
-## Getting Started
-Download the [production version][min] or the [development version][max].
-
-[min]: https://raw.github.com/Administrator/webapp/master/dist/aaa.min.js
-[max]: https://raw.github.com/Administrator/webapp/master/dist/aaa.js
-
-In your web page:
-
-```html
-<script src="jquery.js"></script>
-<script src="dist/aaa.min.js"></script>
-<script>
-jQuery(function($) {
-  $.awesome(); // "awesome"
-});
-</script>
-```
+<<<<<<< HEAD
 
 ## Documentation
 _(Coming soon)_
@@ -28,3 +8,7 @@ _(Coming soon)_
 
 ## Release History
 _(Nothing yet)_
+=======
+# flymelight
+前端自动化解决方案
+>>>>>>> 1daddfeb4d176899d8c2c6821f6b53e8ae66213e
