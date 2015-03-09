@@ -41,11 +41,11 @@
 - 打包压缩发布，压缩格式为.zip
   - grunt compress 或 grunt compress:main
 
-## Release History
+## Release History - 更新历史
 
-- v1.0.0 - 构建方便可用的Grunt前端自动化开发环境，快速部署，高效开发。
+- v1.0.0 - 项目初建
 
 =======
 # flymelight
-前端自动化解决方案
+前端自动化解决方案 - 构建方便可用的Grunt前端自动化开发环境，快速部署，高效开发。
 >>>>>>> 1daddfeb4d176899d8c2c6821f6b53e8ae66213e
