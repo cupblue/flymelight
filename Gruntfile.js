@@ -28,10 +28,10 @@ module.exports = function(grunt) {
     // https://www.npmjs.com/package/grunt-contrib-clean
     // 删除目录及其下文件 /**等同不加
     clean: {
-      main: ["dist/<%= project.name %>", "publish/<%= project.name %>"],
-      release: ["publish/<%= project.name %>"],
-      css: ["dist/<%= project.name %>/css/**", "!publish/<%= project.name %>/css/**"],
-      js: ["dist/<%= project.name %>/js/**", "!publish/<%= project.name %>/js/**"]
+      main: ['dist/<%= project.name %>', 'publish/<%= project.name %>'],
+      release: ['publish/<%= project.name %>'],
+      css: ['dist/<%= project.name %>/css/**', '!publish/<%= project.name %>/css/**'],
+      js: ['dist/<%= project.name %>/js/**', '!publish/<%= project.name %>/js/**']
     },
 
     // https://www.npmjs.com/package/grunt-contrib-compass
@@ -128,6 +128,28 @@ module.exports = function(grunt) {
 
     // https://www.npmjs.com/package/grunt-contrib-copy
     copy: {
+      somecss: {
+        nonull: true,
+        src: 'dist/<%= project.name %>/css/style.css',
+        dest: 'publish/<%= project.name %>/css/style.css'
+      },
+      somejs: {
+        nonull: true,
+        src: 'dist/<%= project.name %>/js/<%= project.name %>.beautify.js',
+        dest: 'publish/<%= project.name %>/js/<%= project.name %>.beautify.js'
+        
+      },
+      cssmin: {
+        files : [
+          {expand: true, cwd: 'dist/<%= project.name %>/css/', src: ['style.min.css'], dest: 'publish/<%= project.name %>/css/', filter: 'isFile'}
+        ]
+      },
+      html:{
+        files : [
+          {expand: true, cwd: 'src/<%= project.name %>/', src: ['*.{html,htm}'], dest: 'dist/<%= project.name %>/', filter: 'isFile'},
+          {expand: true, cwd: 'src/<%= project.name %>/', src: ['*.{html,htm}'], dest: 'publish/<%= project.name %>/', filter: 'isFile'}
+        ]
+      },
       main: {
         files: [
           {expand: true, src: ['path/*'], dest: 'dist/<%= project.name %>/', filter: 'isFile'}, // 复制path目录下的所有文件
@@ -141,9 +163,22 @@ module.exports = function(grunt) {
           {expand: true, cwd: 'dist/<%= project.name %>/css/', src: ['**'], dest: 'publish/<%= project.name %>/css/'},
         ]
       },
+      image: {
+        files : [
+          {expand: true, cwd: 'dist/<%= project.name %>/images/', src: ['**'], dest: 'publish/<%= project.name %>/images/'}
+        ]
+      },
       js: {
         files : [
           {expand: true, cwd: 'dist/<%= project.name %>/js/', src: ['**'], dest: 'publish/<%= project.name %>/js/'},
+        ]
+      },
+      jslib: {
+        files : [
+          {expand: true, cwd: 'src/<%= project.name %>/js/libs/', src: ['**'], dest: 'dist/<%= project.name %>/js/libs/'},
+          {expand: true, cwd: 'src/<%= project.name %>/js/plugins/', src: ['**'], dest: 'dist/<%= project.name %>/js/plugins/'},
+          {expand: true, cwd: 'src/<%= project.name %>/js/libs/', src: ['**'], dest: 'publish/<%= project.name %>/js/libs/'},
+          {expand: true, cwd: 'src/<%= project.name %>/js/plugins/', src: ['**'], dest: 'publish/<%= project.name %>/js/plugins/'}
         ]
       }
 
@@ -184,13 +219,32 @@ module.exports = function(grunt) {
         options: {                                 // Target options 
           removeComments: true,
           collapseWhitespace: true,
+          // preserveLineBreaks: true
+        },
+        files: {                                   // Dictionary of files 
+          'dist/<%= project.name %>/index.html': 'src/<%= project.name %>/index.html',     // 'destination': 'source' 
+          'dist/<%= project.name %>/christmas.html': 'src/<%= project.name %>/christmas.html',
+          'dist/<%= project.name %>/slot.html': 'src/<%= project.name %>/slot.html',
+          'dist/<%= project.name %>/backpack.htm': 'src/<%= project.name %>/backpack.htm',
+          'dist/<%= project.name %>/backpack_empty.html': 'src/<%= project.name %>/backpack_empty.html',
+          'dist/<%= project.name %>/test.html': 'src/<%= project.name %>/test.html'
+        }
+      },
+      release: {                                      // Target 
+        options: {                                 // Target options 
+          removeComments: true,
+          collapseWhitespace: true,
           useShortDoctype: true,
           minifyJS: true,                          // Minify Javascript in script elements and on* attributes (uses UglifyJS)
           minifyCSS: true                          // Minify CSS in style elements and style attributes (uses clean-css)
         },
         files: {                                   // Dictionary of files 
-          'dist/<%= project.name %>/index.html': 'src/<%= project.name %>/index.html',     // 'destination': 'source' 
-          'dist/<%= project.name %>/christmas.html': 'src/<%= project.name %>/christmas.html'
+          'publish/<%= project.name %>/index.html': 'publish/<%= project.name %>/index.html',     // 'destination': 'source' 
+          'publish/<%= project.name %>/christmas.html': 'publish/<%= project.name %>/christmas.html',
+          'publish/<%= project.name %>/slot.html': 'publish/<%= project.name %>/slot.html',
+          'publish/<%= project.name %>/backpack.htm': 'publish/<%= project.name %>/backpack.htm',
+          'publish/<%= project.name %>/backpack_empty.html': 'publish/<%= project.name %>/backpack_empty.html',
+          'publish/<%= project.name %>/test.html': 'publish/<%= project.name %>/test.html'
         }
       },
       /*
@@ -283,6 +337,7 @@ module.exports = function(grunt) {
     /*设置 JS 执行环境为浏览器"browser": true,
       加载 jQuery 的全局变量（jQuery、$）"jquery": true,
       行尾不要分号"asi": true,
+      In jshit options the devel option allow you to use console.log and alerts without warnings
     */
     jshint: {
       options: {
@@ -291,8 +346,18 @@ module.exports = function(grunt) {
       },
       all: [
         'Gruntfile.js',
-        'src/*/js/**/*.js'
+        'src/<%= project.name %>/js/**/*.js'
       ],
+      usr: [
+        'Gruntfile.js',
+        'src/<%= project.name %>/js/*.js'
+      ],
+      dev: {
+        options: {
+          'devel' : false,
+        },
+        src: ['Gruntfile.js','src/<%= project.name %>/js/*.js']
+      },
       test: {
         options: {
           jshintrc: 'test/.jshintrc'
@@ -316,9 +381,9 @@ module.exports = function(grunt) {
           },
         },
         files: {
-          "src/<%= project.name %>/css/style.css": "src/<%= project.name %>/less/style.less",
-          // "src/<%= project.name %>/css/index.css": "src/<%= project.name %>/less/index.less",
-          "src/<%= project.name %>/css/base.css": "src/<%= project.name %>/less/base.less"
+          'src/<%= project.name %>/css/style.css': 'src/<%= project.name %>/less/style.less',
+          // 'src/<%= project.name %>/css/index.css': 'src/<%= project.name %>/less/index.less',
+          'src/<%= project.name %>/css/base.css': 'src/<%= project.name %>/less/base.less'
         }
       },
       production: {
@@ -330,9 +395,9 @@ module.exports = function(grunt) {
           optimization: 2
         },
         files: {
-          "dist/<%= project.name %>/css/style.css": "src/<%= project.name %>/less/style.less",
-          // "src/<%= project.name %>/css/index.css": "src/<%= project.name %>/less/index.less",
-          "dist/<%= project.name %>/css/base.css": "src/<%= project.name %>/less/base.less"
+          'dist/<%= project.name %>/css/style.css': 'src/<%= project.name %>/less/style.less',
+          // 'src/<%= project.name %>/css/index.css': 'src/<%= project.name %>/less/index.less',
+          'dist/<%= project.name %>/css/base.css': 'src/<%= project.name %>/less/base.less'
         }
       }
     },
@@ -480,12 +545,17 @@ module.exports = function(grunt) {
   // grunt.loadNpmTasks('grunt-usemin');
 
 
-  // Default task(s).
-  grunt.registerTask('default', ['cssmin', 'uglify', 'concat', 'htmlmin:dist', 'imagemin', 'jshint', '']);
+  // Default task(s). 需要后台继续开发，为便于后台开发嵌套数据，不进行重度压缩
+  grunt.registerTask('default', ['jshint:dev', 'clean:main', 'compass:dev', 'concat:js', 'concat:css', 'cssmin:all', 'uglify:beautify', 'imagemin:dynamic', 'copy:cssmin', 'copy:jslib', 'copy:somejs', 'copy:html', 'copy:image', 'compress:main']);
+
+  // 静态任务适用于:html，js无动态数据，或已用Ajax实现，不需要后台继续开发
+  grunt.registerTask('statictask', ['jshint:dev', 'clean:main', 'compass:dev', 'concat:js', 'concat:css', 'cssmin:all', 'uglify:beautify', 'imagemin:dynamic', 'copy:cssmin', 'copy:jslib', 'copy:somejs', 'copy:html', 'htmlmin:release', 'copy:image', 'compress:main']);
   
-  // 自定义任务
+  //监视实时刷新
   grunt.registerTask('mylivedev', ['connect:server', 'watch:livereload']);
-  grunt.registerTask('pubdev', ['clean:release', 'copy:main', 'compress:main']);
+  
+  //重新发布
+  grunt.registerTask('pubdev', ['clean:release', 'copy:cssmin', 'copy:jslib', 'copy:somejs', 'copy:html', 'copy:image', 'compress:main']);
 
 
 };

@@ -13,5 +13,7 @@
   "node": true,
   "browser": true,
   "quotmark": "single",
-  "jquery": true
+  "jquery": true,
+  "devel": true,
+  "strict" : true
 }
