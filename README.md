@@ -42,7 +42,9 @@
   - grunt compress 或 grunt compress:main
 
 ## Release History
+
 - v1.0.0 - 构建方便可用的Grunt前端自动化开发环境，快速部署，高效开发。
+
 =======
 # flymelight
 前端自动化解决方案
