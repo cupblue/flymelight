@@ -1,5 +1,5 @@
 'use strict';
-jQuery(function(){
+$(function(){
 /*
 	alert($(this).width());
 	alert(window.innerWidth);

@@ -1,14 +1,14 @@
 'use strict';
-jQuery(function(){
-/*
+$(function(){
+
 	alert($(this).width());
 	alert(window.innerWidth);
 	alert(window.devicePixelRatio);
 	
-*/
+
 	$('.pack').css('minHeight', $(window).height());
 	$('.giftevent .view').on('click', function(){
-		var val = $(this).attr('data-val');
+		var val = parseInt($(this).attr('data-val'));
 		$('.codetext').hide();
 		$('.prz-ico').attr('class', 'prz-ico').addClass('prz-gift' + val);
 		$('.giftshow .name').html($(this).siblings('.przname').val());

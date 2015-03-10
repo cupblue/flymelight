@@ -14,7 +14,7 @@
   - 可使用compass的工具库，支持浏览器前缀自动补全，需要在.scss文件头部引入@import "compass/css3";
   - sass 依赖于ruby，请ruby官网下载安装ruby，然后再安装sass和compass。如:gem install sass
 
-- 代码调试：执行以下任务可开启监听功能，实时刷新浏览器页面。
+- 代码调试：执行以下任务可开启监听功能，代码保存时，实时刷新浏览器页面，方便预览。
   - 命令：grunt mylivedev
   - 默认打开index.html页面，若没有则显示项目当前的文件目录结构。
 

@@ -479,7 +479,7 @@ module.exports = function(grunt) {
       },
       sass: {
         files: ['src/<%= project.name %>/sass/**/*.scss'],
-        tasks: ['sass:dev', 'autoprefixer'],
+        tasks: ['sass:dist'],
         options: {
             spawn: false,
             livereload: true
@@ -487,7 +487,7 @@ module.exports = function(grunt) {
       },
       css: {
         files: ['src/<%= project.name %>/css/**/*.css'],
-        tasks: ['cssmin:dev', 'autoprefixer'],
+        // tasks: ['cssmin:all'],
         options: {
             spawn: false,
             livereload: true
@@ -513,10 +513,10 @@ module.exports = function(grunt) {
           'src/<%= project.name %>/js/**/*.{js,css}',
           'src/<%= project.name %>/images/**/*.{ico,gif,jpeg,jpg,png,svg,webp}'
         ],
-        // tasks: ["htmlmin"],
+        tasks: ["compass:dev"],
         options: {
           // livereload: true,
-          // spawn: false,
+          spawn: false,
           livereload: '<%=connect.options.livereload%>'  // 监听前面声明的端口  35729
         },
       },
