@@ -14,29 +14,30 @@
 	<iframe id="ifr" name='main' src='' width='100%' height='600' frameborder='0'></iframe>
 	<script>
 		var baseurl = 'http://beijingair.sinaapp.com/data/beijing/all/';
-		document.getElementById('btn').onclick = function(){
+		document.getElementById('btn').onclick = function() {
 			doDownLoad(baseurl);
 		}
 
-		function doDownLoad(baseurl){
-			var num = 0, date, url;
-			setInterval(function(){
-				date = getDateStr(num),
-				url = baseurl + date + '/csv';
-				alert(url);
-				document.getElementById('ifr').setAttribute('src', url);
-				document.getElementById('showlist').click();
-				num--;			
-			}, 1000);
+		function doDownLoad(baseurl) {
+		var num = 0,
+			date, url;
+		date = getDateStr(num),
+			url = baseurl + date + '/csv';
+		alert(url);
+		document.getElementById('ifr').setAttribute('src', url);
+		document.getElementById('showlist').click();
+		num--;
+		}, 1000);
 
 		}
+
 		function getDateStr(addDayCount) {
 			var dd = new Date();
 			addDayCount = addDayCount ? addDayCount : '';
-			dd.setDate( dd.getDate() + addDayCount );//获取AddDayCount天后的日期
+			dd.setDate(dd.getDate() + addDayCount); //获取AddDayCount天后的日期
 			var y = dd.getFullYear();
-			var m = dd.getMonth() + 1,//获取当前月份的日期
-				m = m<10 ? '0' + m : m;
+			var m = dd.getMonth() + 1, //获取当前月份的日期
+				m = m < 10 ? '0' + m : m;
 			var d = dd.getDate(),
 				d = d < 10 ? '0' + d : d;
 

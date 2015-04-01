@@ -17,7 +17,7 @@ module.exports = function(grunt) {
 
     // Project settings
     project: {
-        name: 'christmas',  //项目目录名称
+        name: 'ghost',  //项目目录名称
         app: 'app',
         dist: 'dist',
         src: 'src'
@@ -204,9 +204,25 @@ module.exports = function(grunt) {
         },
         files: [{
           expand: true,
-          cwd: 'dist/<%= project.name %>/css',
+          cwd: 'src/<%= project.name %>/css',
           src: ['*.css', '!*.min.css'],
           dest: 'dist/<%= project.name %>/css',
+          ext: '.min.css'
+        }]
+      },
+      dev: {
+        options: {
+          shorthandCompacting: true, // set to false to skip shorthand compacting (default is true unless sourceMap is set when it's false)
+          roundingPrecision: -1, // rounding precision; defaults to 2; -1 disables rounding
+          report: 'min',  //default
+          aggressiveMerging: false,
+          advanced: false,  //合并，排序等
+        },
+        files: [{
+          expand: true,
+          cwd: 'src/<%= project.name %>/css',
+          src: ['*.css', '!*.min.css'],
+          dest: 'src/<%= project.name %>/css',
           ext: '.min.css'
         }]
       }
@@ -220,6 +236,8 @@ module.exports = function(grunt) {
           removeComments: true,
           collapseWhitespace: true,
           // preserveLineBreaks: true
+          minifyJS: true,                          // Minify Javascript in script elements and on* attributes (uses UglifyJS)
+          minifyCSS: true
         },
         files: {                                   // Dictionary of files 
           'dist/<%= project.name %>/index.html': 'src/<%= project.name %>/index.html',     // 'destination': 'source' 
@@ -308,12 +326,24 @@ module.exports = function(grunt) {
         options: {                   // Lossless conversion to progressive for .jpg by default.
           optimizationLevel: 7,
           use: [mozjpeg()],
-          progressive : true
+          progressive : true  //.jpg default true 
         },  
         files: [{
           expand: true,                  // Enable dynamic expansion 
           cwd: 'src/<%= project.name %>/images/',                   // Src matches are relative to this path 
           src: ['*.jpg'],               // Actual patterns to match 
+          dest: 'dist/<%= project.name %>/images/'                 // Destination path prefix 
+        }]
+      },
+      gif: {                         // Another target 
+        options: {                   // Lossless conversion to progressive for .gif by default.
+          optimizationLevel: 7,
+          interlaced: true  //.gif default true
+        },  
+        files: [{
+          expand: true,                  // Enable dynamic expansion 
+          cwd: 'src/<%= project.name %>/images/',                   // Src matches are relative to this path 
+          src: ['*.gif'],               // Actual patterns to match 
           dest: 'dist/<%= project.name %>/images/'                 // Destination path prefix 
         }]
       },
@@ -458,6 +488,16 @@ module.exports = function(grunt) {
         files: {
           'dist/<%= project.name %>/js/target.min.js': '<%= concat.somejs.dest %>'
         }
+      },
+      somejs:{
+        options: {
+          preserveComments: 'some'
+        },
+        files: {
+          'dist/<%= project.name %>/js/main.min.js': 'src/<%= project.name %>/js/main.js',
+          'dist/<%= project.name %>/js/share.min.js': 'src/<%= project.name %>/js/share.js',
+          'dist/<%= project.name %>/js/index.min.js': 'src/<%= project.name %>/js/index.js'
+        }
       }
 
     },
@@ -513,7 +553,7 @@ module.exports = function(grunt) {
           'src/<%= project.name %>/js/**/*.{js,css}',
           'src/<%= project.name %>/images/**/*.{ico,gif,jpeg,jpg,png,svg,webp}'
         ],
-        tasks: ["compass:dev"],
+        tasks: ['compass:dev'],
         options: {
           // livereload: true,
           spawn: false,
@@ -547,6 +587,9 @@ module.exports = function(grunt) {
 
   // Default task(s). 需要后台继续开发，为便于后台开发嵌套数据，不进行重度压缩
   grunt.registerTask('default', ['jshint:dev', 'clean:main', 'compass:dev', 'concat:js', 'concat:css', 'cssmin:all', 'uglify:beautify', 'imagemin:dynamic', 'copy:cssmin', 'copy:jslib', 'copy:somejs', 'copy:html', 'copy:image', 'compress:main']);
+
+  //js独立，不合并
+  grunt.registerTask('jsex', ['jshint:dev', 'clean:main', 'compass:dev', 'cssmin:all', 'uglify:somejs', 'imagemin:dynamic', 'copy:cssmin', 'copy:js', 'copy:html', 'copy:image', 'compress:main']);
 
   // 静态任务适用于:html，js无动态数据，或已用Ajax实现，不需要后台继续开发
   grunt.registerTask('statictask', ['jshint:dev', 'clean:main', 'compass:dev', 'concat:js', 'concat:css', 'cssmin:all', 'uglify:beautify', 'imagemin:dynamic', 'copy:cssmin', 'copy:jslib', 'copy:somejs', 'copy:html', 'htmlmin:release', 'copy:image', 'compress:main']);
