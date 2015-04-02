@@ -498,7 +498,16 @@ module.exports = function(grunt) {
           'dist/<%= project.name %>/js/share.min.js': 'src/<%= project.name %>/js/share.js',
           'dist/<%= project.name %>/js/index.min.js': 'src/<%= project.name %>/js/index.js'
         }
-      }
+      },
+      test:{
+        options: {
+          preserveComments: 'some'
+        },
+        files: {
+          'dist/<%= project.name %>/js/common.min.js': 'src/<%= project.name %>/js/common.js',
+          'dist/<%= project.name %>/js/share.min.js': 'src/<%= project.name %>/js/share.js',
+        }
+      },
 
     },
 

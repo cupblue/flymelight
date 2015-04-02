@@ -37,32 +37,6 @@
 	        return result;
 	    }
 	};
-	var flag = true,
-		total = 0,
-		timer = null,
-		milliseconds = 0,
-		k_index,
-		storage = window.localStorage;
-		
-	var obj_item = document.getElementById('ghost-list').getElementsByTagName('li'),
-		totalObj = document.getElementById('totalcount'),
-		overlayObj = document.getElementById('overlay'),
-		popupObj = document.getElementById('popup'),
-		popupRes = popupObj.firstElementChild || popupObj.firstChild,
-		shareLayer = overlayObj.lastElementChild || overlayObj.lastChild,
-		w = document.getElementById('wrap').clientWidth,
-		h_window = document.documentElement.clientHeight,
-		h_wrap = document.documentElement.clientWidth >= 640 ? 1080 : h_window,
-		w_item = Math.floor(w/3),
-		h_item = Math.floor(w_item*248/235 * 1.3),
-		top_area = Math.floor(w*370/720);
-
-	for(var i=0, len = obj_item.length; i<len; i++){
-		obj_item[i].setAttribute('style', 'height:' + h_item + 'px');
-	}
-	document.getElementById('ghost-area').setAttribute('style', 'top:' + top_area + 'px');
-	document.getElementById('wrap').setAttribute('style', 'height:' + h_wrap + 'px');
-
 
 /*
 	function whichTransitionEvent(){
@@ -117,6 +91,36 @@
 	}
 
 */
+
+	var flag = true,
+		total = 0,
+		timer = null,
+		milliseconds = 0,
+		k_index,
+		storage = window.localStorage,
+		animationEvent = whichAnimationEvent();
+		
+	var obj_item = document.getElementById('ghost-list').getElementsByTagName('li'),
+		totalObj = document.getElementById('totalcount'),
+		overlayObj = document.getElementById('overlay'),
+		popupObj = document.getElementById('popup'),
+		popupRes = popupObj.firstElementChild || popupObj.firstChild,
+		shareLayer = overlayObj.lastElementChild || overlayObj.lastChild,
+		w = document.getElementById('wrap').clientWidth,
+		h_window = document.documentElement.clientHeight,
+		h_wrap = document.documentElement.clientWidth >= 640 ? 1080 : h_window,
+		w_item = Math.floor(w/3),
+		h_item = Math.floor(w_item*248/235 * 1.3),
+		top_area = Math.floor(w*370/720);
+
+	for(var i=0, len = obj_item.length; i<len; i++){
+		obj_item[i].setAttribute('style', 'height:' + h_item + 'px');
+	}
+	document.getElementById('ghost-area').setAttribute('style', 'top:' + top_area + 'px');
+	document.getElementById('wrap').setAttribute('style', 'height:' + h_wrap + 'px');
+
+
+
 
 	function index(current, obj){
 		for (var i = 0, length = obj.length; i<length; i++) {
@@ -184,6 +188,13 @@
 
 	//弹窗显示抽奖结果
 	function showRes(data){
+		Flyme && Flyme.wxShareInit('wx4739efbb76920078','C2', 1, '', {
+			'id': '1',
+			'link': 'http://game.feiliu.com/protest/qm/index.html',
+			'imgUrl': 'http://game.feiliu.com/protest/christmas/images/share.png',
+			'title': '30秒内我打了' + data.total + '个怪兽，敢不敢来挑战？！- 全职高手',
+			'desc': '全职高手手游，玩游戏拿大奖，还不赶紧行动！！！'
+		});
 		data = {'status' : 5, 'total' : data.total, 'timesleft' : 0, 'result' : '', 'percent' : '12.7', 'creditsTotal' : 0, 'creditsConsume' : 0, 'shareDone' : 0, 'suc' : 0, 'przTit': '很遗憾~', 'przCont' : '', 'tips' : ''};
 		data = {'status' : 2, 'total' : data.total, 'timesleft' : 0, 'result' : '', 'percent' : '52.7', 'creditsTotal' : 100, 'creditsConsume' : 20, 'shareDone' : 0, 'suc' : 1, 'przTit':'很遗憾~', 'przCont' : '', 'tips' : '' };
 		var pophtml = '<div class="popup-tit">游戏结束</div>' +
@@ -195,12 +206,14 @@
 		}
 					 
 		pophtml += '<div class="popup-btn tc"><a href="javascript:;" class="btn-item"><img class="btn-showoff" src="images/show.png" alt="炫耀一下"></a><a href="index.html" class="btn-item"><img class="btn-back" src="images/back.png" alt="返回首页"></a></div>';
+		
 		setTimeout(function(){
 			popupRes.innerHTML = pophtml;
 			popupObj.style.display = 'block';
 			// overlayObj.style.display = 'block';
 		}, 1000);
-
+		
+		
 
 	}
 
