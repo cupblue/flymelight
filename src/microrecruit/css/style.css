@@ -1,0 +1,86 @@
+@charset "utf-8";
+
+a:link, a:visited {
+    color: #666;
+}
+a:hover{
+	color:#88d316; 
+}
+.header {
+	background:#014d89;
+}
+
+.header2 {
+	background:#014d89;
+	border-bottom:1px solid #004579;
+}
+
+.select_positon{
+	background:#014d89;
+	border-top:1px solid #015593; 
+}
+
+.noticePop .noticeTitle{background:#014d89;color:#fff;}
+.inputPop .noticeTitle{background:#014d89;color:#fff;}
+.selectPop .noticeTitle2{background:#014d89;color:#fff;}
+
+.header2 .searchdiv .searchBtn{
+	background:#88d316;
+}
+.select_positon td{
+	border-top:1px solid #015593;
+}
+.br{border-right: 1px solid #014880;}
+.bl{border-left: 1px solid #015593;}
+#uboxstyle div.tag_select {
+    color: #fff;
+}
+.position_title span.hot {
+    background: none repeat scroll 0 0 #88d316;
+}
+.icon_applyAll{
+	background:#88d316;
+}
+.icon_likeposition {
+    background: none repeat scroll 0 0 #f39800;
+}
+
+.tabmenu li.tab_left {
+    border: 2px solid #123660;
+}
+
+.tabmenu li.tab_center {
+    border-color: #123660 ;
+}
+
+.tabmenu li.tab_right {
+    border: 2px solid #123660;
+}
+.tabmenu li.tab_on {
+    background: none repeat scroll 0 0 #123660;
+}
+.tabmenu li a:link,.tabmenu li a:visited{
+	color:#c8e1ff;
+}
+.btn_greenFull{
+	background:#88d316;
+}
+.bg_green {
+	background: #88d316;
+}
+.icon_apply_job {
+	background: #88d316;
+}
+.icon_collect {
+	background: #f39800;
+}
+.icon_share {
+	background: #004d88;
+}
+.icon_choose a{
+	background:url(../images/icon.png) no-repeat;
+	background-size:100px 500px;
+}
+.uboxstyle div.tag_select {
+	background: url("../images/ubox-sel.png") right center no-repeat;
+}

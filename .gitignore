@@ -1,6 +1,19 @@
+# 以'#'开始的行，被视为注释. 
 /node_modules/
 /publish/
 /zip/
 /test/
 /.sass-cache/
 /sample/
+/samples/
+                                                                                                                         
+# 忽略掉所有文件名是 test.htm的文件.
+test.htm
+
+# 忽略所有生成的 rar/zip文件,
+*.rar
+*.zip
+*.bak
+
+# zip发布目录下是上线的文件，所以例外.
+!zip/*.zip

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>上传完整简历-微招聘系统</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <link href="css/style.css" rel="stylesheet" type="text/css" />
+        <link href="css/mobweb.css" rel="stylesheet" type="text/css" />
+        <link href="css/select2css.css" rel="stylesheet" type="text/css" />
+        <script type="text/javascript" src="js/wx/mobwx.js"></script>
+        <script type="text/javascript" src="js/libs/jquery-1.8.2.min.js"></script>
+        <script type="text/javascript" src="js/mobweb.js"></script>
+        <script type="text/javascript" src="js/plugins/select2css.js"></script>
+
+    </head>
+    
+    <body>
+        <div class="header"> <a href="javascript:goBackUrl()" class="icon icon_left icon_back"></a>
+             <h4 class="title">上传完整简历</h4>
+        </div>
+
+            <div class="content">
+                <div class="resume_row resume_row_type">
+                    <div class="resume_type">
+                        <div class="uboxstyle">
+                            <select name="resume_type" class="select2css">
+                                <option value="">简历类型</option>
+                                <option value="1">智联招聘</option>
+                                <option value="2">51job</option>
+                                <option value="3">猎聘网</option>
+                                <option value="4">中华英才网</option>
+                                <option value="5">个人自定义</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="resume_row_upload">
+                    <input type="text" name="filepath" id="filepath" class="fileupload">
+                    <span class="filebtn">上传</span>
+                    <input type="file" name="upload" id="upload" style="display:none;">
+                </div>
+                <div class="resume_upload_submit">
+                    <span class="submit">提交</span>
+                </div>
+            </div>
+
+    </body>
+    <!-- 分享 start -->
+</html>

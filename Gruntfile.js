@@ -17,7 +17,8 @@ module.exports = function(grunt) {
 
     // Project settings
     project: {
-        name: 'ghost',  //项目目录名称
+        // name: 'hehuan-wx',  //项目目录名称
+        name: 'zyzt2',
         app: 'app',
         dist: 'dist',
         src: 'src'
@@ -139,6 +140,12 @@ module.exports = function(grunt) {
         dest: 'publish/<%= project.name %>/js/<%= project.name %>.beautify.js'
         
       },
+      mainjs: {
+        nonull: true,
+        src: 'dist/<%= project.name %>/js/main.js',
+        dest: 'publish/<%= project.name %>/js/main.js'
+        
+      },
       cssmin: {
         files : [
           {expand: true, cwd: 'dist/<%= project.name %>/css/', src: ['style.min.css'], dest: 'publish/<%= project.name %>/css/', filter: 'isFile'}
@@ -148,6 +155,11 @@ module.exports = function(grunt) {
         files : [
           {expand: true, cwd: 'src/<%= project.name %>/', src: ['*.{html,htm}'], dest: 'dist/<%= project.name %>/', filter: 'isFile'},
           {expand: true, cwd: 'src/<%= project.name %>/', src: ['*.{html,htm}'], dest: 'publish/<%= project.name %>/', filter: 'isFile'}
+        ]
+      },
+      htmlpub:{
+        files : [
+          {expand: true, cwd: 'dist/<%= project.name %>/', src: ['*.{html,htm}'], dest: 'publish/<%= project.name %>/', filter: 'isFile'},
         ]
       },
       main: {
@@ -168,6 +180,12 @@ module.exports = function(grunt) {
           {expand: true, cwd: 'dist/<%= project.name %>/images/', src: ['**'], dest: 'publish/<%= project.name %>/images/'}
         ]
       },
+      allimg: {
+        files : [
+          {expand: true, cwd: 'src/<%= project.name %>/images/', src: ['**'], dest: 'dist/<%= project.name %>/images/'},
+          {expand: true, cwd: 'src/<%= project.name %>/images/', src: ['**'], dest: 'publish/<%= project.name %>/images/'}
+        ]
+      },
       js: {
         files : [
           {expand: true, cwd: 'dist/<%= project.name %>/js/', src: ['**'], dest: 'publish/<%= project.name %>/js/'},
@@ -185,6 +203,9 @@ module.exports = function(grunt) {
     },
 
     // https://www.npmjs.com/package/grunt-contrib-cssmin
+    // https://github.com/gruntjs/grunt-contrib-cssmin/issues/210
+    // https://github.com/jakubpawlowicz/clean-css/issues/497
+    // https://github.com/jakubpawlowicz/clean-css#how-to-set-compatibility-mode
     cssmin: {
       some: {
         options:{
@@ -196,11 +217,14 @@ module.exports = function(grunt) {
       },
       all: {
         options: {
+          compatibility: '*,+properties.zeroUnits,+properties.spaceAfterClosingBrace,+properties.iePrefixHack,+selectors.ie7Hack',
           shorthandCompacting: true, // set to false to skip shorthand compacting (default is true unless sourceMap is set when it's false)
           roundingPrecision: -1, // rounding precision; defaults to 2; -1 disables rounding
           report: 'min',  //default
           aggressiveMerging: false,
           advanced: false,  //合并，排序等
+          noAdvanced: true,
+          
         },
         files: [{
           expand: true,
@@ -210,6 +234,9 @@ module.exports = function(grunt) {
           ext: '.min.css'
         }]
       },
+      /*
+      After visiting https://github.com/GoalSmashers/clean-css I used the noAdvanced option in the gruntfile which fixed my issue. I suggest adding the options that clean-css use to the readme so others can quickly find the options.
+      */
       dev: {
         options: {
           shorthandCompacting: true, // set to false to skip shorthand compacting (default is true unless sourceMap is set when it's false)
@@ -504,7 +531,7 @@ module.exports = function(grunt) {
           preserveComments: 'some'
         },
         files: {
-          'dist/<%= project.name %>/js/common.min.js': 'src/<%= project.name %>/js/common.js',
+          'dist/<%= project.name %>/js/common-1.1.min.js': 'src/<%= project.name %>/js/common-1.1.js',
           'dist/<%= project.name %>/js/share.min.js': 'src/<%= project.name %>/js/share.js',
         }
       },
@@ -571,6 +598,119 @@ module.exports = function(grunt) {
       },
     },
 
+    // https://www.npmjs.com/package/grunt-html-build
+    // https://github.com/spatools/grunt-html-build
+    htmlbuild: {
+      test: {
+          src: 'src/fixtures/index.html',
+          dest: 'dist/fixtures/',
+          options: {
+              beautify: true,
+              prefix: '//some-cdn', //type : string | optional | default: null
+              relative: true, //type : string | optional | default: true
+              scripts: {
+                  bundle: [
+                      'dist/fixtures/scripts/*.js',
+                      '!**/main.js',
+                  ],
+                  main: 'dist/fixtures/scripts/main.js',
+                  inlineapp: 'dist/fixtures/scripts/app.js'
+              },
+              styles: {
+                  bundle: [
+                      'dist/fixtures/css/libs.css',
+                      'dist/fixtures/css/dev.css'
+                  ],
+                  test: 'dist/fixtures/css/inline.css'
+              },
+              sections: {
+                  views: 'dist/fixtures/views/**/*.html',
+                  templates: 'dist/fixtures/templates/**/*.html',
+                  layout: {
+                      header: 'dist/fixtures/layout/header.html',
+                      footer: 'dist/fixtures/layout/footer.html'
+                  }
+              },
+              data: {
+                  // Data to pass to templates 
+                  version: '0.1.0',
+                  title: 'Grunt-html-build test',
+              },
+              logOptionals: true, // Log an alert in console if some optional tags are not rendered
+          }
+      },
+      dev: {
+          src: 'src/<%= project.name %>/*.html',
+          dest: 'dist/<%= project.name %>/',
+          options: {
+              beautify: true,
+              prefix: '',
+              relative: true,
+              scripts: {
+                  bundle: [
+                      'dist/<%= project.name %>/js/*.js',
+                      '!**/*.min.js',
+                  ],
+                  main: 'dist/<%= project.name %>/js/main.js'
+              },
+              styles: {
+                  bundle: [
+                      'dist/<%= project.name %>/css/*.min.css',
+                  ],
+                  inline: 'dist/<%= project.name %>/css/inline.css'
+              },
+              sections: {
+                  views: 'dist/<%= project.name %>/views/**/*.html',
+                  templates: 'dist/<%= project.name %>/templates/**/*.html',
+                  layout: {
+                      header: 'dist/<%= project.name %>/layout/header.html',
+                      footer: 'dist/<%= project.name %>/layout/footer.html'
+                  }
+              },
+              data: {
+                  // Data to pass to templates 
+                  version: '1.0',
+                  title: 'HTMLbuild',
+              },
+          }
+      },
+      pub: {  //html-build缺点：不能替换图片链接
+          src: 'src/<%= project.name %>/*.html',
+          dest: 'publish/<%= project.name %>/',
+          options: {
+              // beautify: true,
+              // prefix: 'http://game.feiliu.com/protest/<%= project.name %>/',
+              relative: true,
+              scripts: {
+                  bundle: [
+                      'publish/<%= project.name %>/js/*.js',
+                      '!**/main.js',
+                  ],
+                  main: 'publish/<%= project.name %>/js/main.js'
+              },
+              styles: {
+                  bundle: [
+                      'publish/<%= project.name %>/css/*.min.css',
+                  ],
+                  inline: 'publish/<%= project.name %>/css/inline.css'
+              },
+              sections: {
+                  views: 'publish/<%= project.name %>/views/**/*.html',
+                  templates: 'publish/<%= project.name %>/templates/**/*.html',
+                  layout: {
+                      header: 'publish/<%= project.name %>/layout/header.html',
+                      footer: 'publish/<%= project.name %>/layout/footer.html'
+                  }
+              },
+              data: {
+                  // Data to pass to templates 
+                  version: '1.0',
+                  title: 'HTMLbuild',
+              },
+          }
+      }
+    },
+
 
   });
 
@@ -590,7 +730,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-sass');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-watch');
-  // grunt.loadNpmTasks('grunt-html-build');
+  grunt.loadNpmTasks('grunt-html-build');
   // grunt.loadNpmTasks('grunt-usemin');
 
 
@@ -600,8 +740,14 @@ module.exports = function(grunt) {
   //js独立，不合并
   grunt.registerTask('jsex', ['jshint:dev', 'clean:main', 'compass:dev', 'cssmin:all', 'uglify:somejs', 'imagemin:dynamic', 'copy:cssmin', 'copy:js', 'copy:html', 'copy:image', 'compress:main']);
 
-  // 静态任务适用于:html，js无动态数据，或已用Ajax实现，不需要后台继续开发
+  // 静态任务，适用于:html，js无动态数据，或已用Ajax实现，不需要后台继续开发
   grunt.registerTask('statictask', ['jshint:dev', 'clean:main', 'compass:dev', 'concat:js', 'concat:css', 'cssmin:all', 'uglify:beautify', 'imagemin:dynamic', 'copy:cssmin', 'copy:jslib', 'copy:somejs', 'copy:html', 'htmlmin:release', 'copy:image', 'compress:main']);
+
+  // 静态不压图任务，适用于:html，js无动态数据，或已用Ajax实现，不需要后台继续开发 + 不处理图片
+  grunt.registerTask('noimgstatic', ['jshint:dev', 'clean:main', 'compass:dev', 'concat:js', 'concat:css', 'cssmin:all', 'uglify:beautify', 'copy:cssmin', 'copy:jslib', 'copy:somejs', 'htmlbuild:dev', 'copy:html', 'htmlmin:release', 'copy:allimg', 'compress:main']);
+
+  // 动态不压图不压html任务，适用于有动态数据需要后台继续开发 + 不压html,js且不处理图片
+  grunt.registerTask('noimgdynamic', ['jshint:dev', 'clean:main', 'compass:dev', 'concat:js', 'concat:css', 'cssmin:all', 'copy:cssmin', 'copy:jslib', 'copy:mainjs', 'htmlbuild:dev', 'copy:htmlpub', 'copy:allimg', 'compress:main']);
   
   //监视实时刷新
   grunt.registerTask('mylivedev', ['connect:server', 'watch:livereload']);

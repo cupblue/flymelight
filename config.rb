@@ -9,10 +9,10 @@ force = true
 # Sass Directories
 http_path = "/"
 # project_path = File.expand_path(File.join(File.dirname(__FILE__), '..'))
-css_dir = "stylesheets"
+css_dir = "css"
 sass_dir = "sass"
 images_dir = "images"
-javascripts_dir = "javascripts"
+javascripts_dir = "js"
 
 
 # You can select your preferred output style here (can be overridden via the command line):

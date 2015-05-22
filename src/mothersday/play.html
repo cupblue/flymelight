@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>母亲节摘花</title>
+	<meta name="format-detection" content="telephone=no"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+	<link rel="stylesheet" type="text/css" href="css/style.css">
+</head>
+<body>
+	<div class="wrap" id="wrap">
+		<div class="gameinfo">
+			<div class="total hide" id="total">
+				<span class="totalcount" id="totalcount">0</span>
+			</div>
+			<div class="time hide" id="time">
+				<span class="countdown" id="countdown"><b class="min">00</b>30</span>
+			</div>			
+		</div>
+
+		<input type="hidden" name="uid" id="uid">
+		<input type="hidden" name="sign" id="sign">
+		<input type="hidden" name="chance" id="chance" value='1'>
+		<div class="ghost-area" id="ghost-area">
+			<ul id="ghost-list">
+				<li class="ghost-item "></li>
+				<li class="ghost-item "></li>
+				<li class="ghost-item "></li>
+				<li class="ghost-item "></li>
+				<li class="ghost-item "></li>
+				<li class="ghost-item "></li>
+				<li class="ghost-item "></li>
+				<li class="ghost-item "></li>
+				<li class="ghost-item "></li>
+			</ul>
+		</div>
+
+	</div>
+	<div class="overlay" id="overlay">
+		<div class="start-row tc">
+			<div class="popinner startinner">
+				<div class="start-txt">为母爱而战！你在30秒内能抢到多少枝花呢？立即来挑战吧！同时有各种游戏充值卡等着你哦！</div>
+				<div class="startbtn" id="start">开始</div>
+			</div>
+		</div>
+		<div class="sharelayer" style="display:none;"><img class="shareimg" src="images/shareonly.png" alt=""></div>
+	</div>
+	<div class="popwindow playpop hide" id="popup">
+		<div class="popinner">
+			<div class="res">
+				<div class="popup-tit">游戏结束</div>
+				<div class="popup-cont">
+					你为母亲抢到了 <i>33</i> 朵花，<br>战胜全宇宙 <i>45.5%</i> 的小伙伴~<br>同时还获得了：<br><img src="images/gift01.png" alt=""><br><span class="gift-name">攻城掠地礼包</span>
+				</div>
+				<div class="popup-btn tc" id="popup-btn">
+					<a href="javascript:;" class="cbtn-a cbtn-lft btn-showoff">炫耀一下</a><a href="javascript:;" class="cbtn-a cbtn-rgt btn-view">立即领取</a>
+					<!-- <a class="btn-item"><img class="btn-showoff" src="images/show.png" alt="炫耀一下"></a><a href="javascript:;" class="btn-item"><img class="btn-view" src="images/view.png" alt="立即领取"></a> -->
+				</div>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript" src="js/main.js"></script>
+</body>
+</html>
