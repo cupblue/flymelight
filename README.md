@@ -28,6 +28,9 @@
 
 开发过程中，也可单独使用所定义的任务命令，如:
 
+- 实时编译刷新浏览器：
+  - grunt mylivedev
+
 - 清理发布目录：
   - grunt clean:release
 
@@ -41,7 +44,12 @@
 - 打包压缩发布，压缩格式为.zip
   - grunt compress 或 grunt compress:main
 
+- 编译发布生成压缩包：
+  - grunt noimgdynamic
+
 ## Release History - 更新历史
+
+- v1.1.0 - 扩展功能
 
 - v1.0.0 - 项目初建
 

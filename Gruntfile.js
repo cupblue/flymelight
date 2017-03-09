@@ -17,8 +17,8 @@ module.exports = function(grunt) {
 
     // Project settings
     project: {
-        // name: 'hehuan-wx',  //项目目录名称
-        name: 'zyzt2',
+        // name: 'usemin-demo',  //项目目录名称
+        name: 'zdinvite',
         app: 'app',
         dist: 'dist',
         src: 'src'
@@ -30,9 +30,11 @@ module.exports = function(grunt) {
     // 删除目录及其下文件 /**等同不加
     clean: {
       main: ['dist/<%= project.name %>', 'publish/<%= project.name %>'],
+      rev: ['rev/<%= project.name %>'],
       release: ['publish/<%= project.name %>'],
       css: ['dist/<%= project.name %>/css/**', '!publish/<%= project.name %>/css/**'],
-      js: ['dist/<%= project.name %>/js/**', '!publish/<%= project.name %>/js/**']
+      js: ['dist/<%= project.name %>/js/**', '!publish/<%= project.name %>/js/**'],
+      cdn: ['cdn/<%= project.name %>']
     },
 
     // https://www.npmjs.com/package/grunt-contrib-compass
@@ -68,6 +70,24 @@ module.exports = function(grunt) {
         },
         files: [
           {expand: true, cwd: 'publish/<%= project.name %>/', src: ['**'], dest: '<%= project.name %>/'}
+        ]
+      },
+      rev: {
+        options: {
+          mode: 'zip',
+          archive: 'zip/<%= project.name %>-rev_<%= grunt.template.today("yyyymmddHHMM") %>' + '.zip'
+        },
+        files: [
+          {expand: true, cwd: 'rev/<%= project.name %>/', src: ['**'], dest: '<%= project.name %>/'}
+        ]
+      },
+      cdn: {
+        options: {
+          mode: 'zip',
+          archive: 'zip/<%= project.name %>-cdn_<%= grunt.template.today("yyyymmddHHMM") %>' + '.zip'
+        },
+        files: [
+          {expand: true, cwd: 'cdn/<%= project.name %>/', src: ['**'], dest: '<%= project.name %>/'}
         ]
       }
     },
@@ -162,11 +182,29 @@ module.exports = function(grunt) {
           {expand: true, cwd: 'dist/<%= project.name %>/', src: ['*.{html,htm}'], dest: 'publish/<%= project.name %>/', filter: 'isFile'},
         ]
       },
+      htmlrev:{
+        files : [
+          {expand: true, cwd: 'src/<%= project.name %>/', src: ['*.{html,htm}'], dest: 'rev/<%= project.name %>/', filter: 'isFile'},
+        ]
+      },
+      htmlcdn:{
+        files : [
+          {expand: true, cwd: 'src/<%= project.name %>/', src: ['*.{html,htm}'], dest: 'cdn/<%= project.name %>/', filter: 'isFile'},
+        ]
+      },
       main: {
         files: [
           {expand: true, src: ['path/*'], dest: 'dist/<%= project.name %>/', filter: 'isFile'}, // 复制path目录下的所有文件
           {expand: true, src: ['path/**'], dest: 'publish/<%= project.name %>/'}, // 复制path及其目录下的所有目录和文件
           {expand: true, cwd: 'dist/<%= project.name %>/', src: ['**'], dest: 'publish/<%= project.name %>/'}, // 复制相对dist项目目录下的所有目录和文件
+          
+        ]
+      },
+      maincdn: {
+        files: [
+          {expand: true, src: ['path/*'], dest: 'dist/<%= project.name %>/', filter: 'isFile'}, // 复制path目录下的所有文件
+          {expand: true, src: ['path/**'], dest: 'publish/<%= project.name %>/'}, // 复制path及其目录下的所有目录和文件
+          {expand: true, cwd: 'rev/<%= project.name %>/', src: ['**'], dest: 'cdn/<%= project.name %>/'}, // 复制相对dist项目目录下的所有目录和文件
           
         ]
       },
@@ -197,6 +235,18 @@ module.exports = function(grunt) {
           {expand: true, cwd: 'src/<%= project.name %>/js/plugins/', src: ['**'], dest: 'dist/<%= project.name %>/js/plugins/'},
           {expand: true, cwd: 'src/<%= project.name %>/js/libs/', src: ['**'], dest: 'publish/<%= project.name %>/js/libs/'},
           {expand: true, cwd: 'src/<%= project.name %>/js/plugins/', src: ['**'], dest: 'publish/<%= project.name %>/js/plugins/'}
+        ]
+      },
+      jslibrev: {
+        files : [
+          {expand: true, cwd: 'src/<%= project.name %>/js/libs/', src: ['**'], dest: 'rev/<%= project.name %>/js/libs/'},
+          {expand: true, cwd: 'src/<%= project.name %>/js/plugins/', src: ['**'], dest: 'rev/<%= project.name %>/js/plugins/'},
+        ]
+      },
+      jslibcdn: {
+        files : [
+          {expand: true, cwd: 'src/<%= project.name %>/js/libs/', src: ['**'], dest: 'cdn/<%= project.name %>/js/libs/'},
+          {expand: true, cwd: 'src/<%= project.name %>/js/plugins/', src: ['**'], dest: 'cdn/<%= project.name %>/js/plugins/'},
         ]
       }
 
@@ -347,6 +397,19 @@ module.exports = function(grunt) {
           cwd: 'src/<%= project.name %>/images/',                   // Src matches are relative to this path 
           src: ['**/*.{png,jpg,jpeg,gif,webp,svg}'],               // Actual patterns to match 
           dest: 'dist/<%= project.name %>/images/'                 // Destination path prefix 
+        }]
+      },
+      dynamicrev: {                         // Another target 动态生成
+        options: {  
+          optimizationLevel: 7,
+          use: [mozjpeg()],
+          interlaced: true
+        },  
+        files: [{
+          expand: true,                  // Enable dynamic expansion 
+          cwd: 'src/<%= project.name %>/images/',                   // Src matches are relative to this path 
+          src: ['**/*.{png,jpg,jpeg,gif,webp,svg}'],               // Actual patterns to match 
+          dest: 'rev/<%= project.name %>/images/'                 // Destination path prefix 
         }]
       },
       jpg: {                         // Another target 
@@ -531,7 +594,7 @@ module.exports = function(grunt) {
           preserveComments: 'some'
         },
         files: {
-          'dist/<%= project.name %>/js/common-1.1.min.js': 'src/<%= project.name %>/js/common-1.1.js',
+          'dist/<%= project.name %>/js/common-1.3.min.js': 'src/<%= project.name %>/js/common-1.3.js',
           'dist/<%= project.name %>/js/share.min.js': 'src/<%= project.name %>/js/share.js',
         }
       },
@@ -651,7 +714,8 @@ module.exports = function(grunt) {
                       'dist/<%= project.name %>/js/*.js',
                       '!**/*.min.js',
                   ],
-                  main: 'dist/<%= project.name %>/js/main.js'
+                  main: 'dist/<%= project.name %>/js/main.js',
+                  beautify: 'dist/<%= project.name %>/js/<%= project.name %>.beautify.js'
               },
               styles: {
                   bundle: [
@@ -711,6 +775,183 @@ module.exports = function(grunt) {
       }
     },
 
+    // https://www.npmjs.com/package/grunt-usemin
+    // https://github.com/yeoman/grunt-usemin
+    // https://github.com/zmofei/grunt-staticize
+    // http://mstaticize.zhuwenlong.com/
+    
+    useminPrepare: {
+      html: [
+        'src/<%= project.name %>/**/*.html',
+        'src/<%= project.name %>/**/*.htm',
+        'src/<%= project.name %>/**/*.php',
+        'src/<%= project.name %>/**/*.tpl',
+      ],
+      options: {
+        // 测试发现这里指定的dest，是usemin引入资源的相对路径的开始
+        // 在usemin中设置assetsDirs，不是指定的相对路径
+        // List of directories where we should start to look for revved version of the assets referenced in the currently looked at file
+        dest: 'rev/<%= project.name %>'
+      }
+    },
+
+    // https://www.npmjs.com/package/grunt-filerev
+    filerev: {
+      options: {
+        algorithm: 'md5',
+        length: 8
+      },
+      images: {
+        src: [
+          'rev/<%= project.name %>/images/**/*.{jpg,jpeg,gif,png,webp}'
+        ]
+      },
+      js: {
+        src: [
+          'rev/<%= project.name %>/js/*.js'
+        ]
+      },
+      css: {
+        src: [
+          'rev/<%= project.name %>/css/*.css'
+        ]
+      },
+      fonts: {
+        src: [
+          'rev/<%= project.name %>/fonts/**/*.{eot,svg,ttf,woff}'
+        ]
+      },
+      all: {
+        src: [
+          'rev/<%= project.name %>/images/**/*.{jpg,jpeg,gif,png,webp,svg}',
+          'rev/<%= project.name %>/css/*.css',
+          'rev/<%= project.name %>/js/*.js',
+          'rev/<%= project.name %>/fonts/**/*.{eot,svg,ttf,woff}'
+        ]
+      },
+
+      imagescdn:{
+        src: [
+          'cdn/<%= project.name %>/images/**/*.{jpg,jpeg,gif,png,webp}'
+        ]
+      },
+      jscdn: {
+        src: [
+          'cdn/<%= project.name %>/js/*.js'
+        ]
+      },
+      csscdn: {
+        src: [
+          'cdn/<%= project.name %>/css/*.css'
+        ]
+      },
+      fontscdn: {
+        src: [
+          'cdn/<%= project.name %>/fonts/**/*.{eot,svg,ttf,woff}'
+        ]
+      },
+      allcdn: {
+        src: [
+          'cdn/<%= project.name %>/images/**/*.{jpg,jpeg,gif,png,webp}',
+          'cdn/<%= project.name %>/css/*.css',
+          'cdn/<%= project.name %>/js/*.js',
+          'cdn/<%= project.name %>/fonts/**/*.{eot,svg,ttf,woff}'
+        ]
+      },
+
+      imagespub: {
+        src: [
+          'publish/<%= project.name %>/images/**/*.{jpg,jpeg,gif,png,webp}'
+        ]
+      },
+      jspub: {
+        src: [
+          'publish/<%= project.name %>/js/*.js'
+        ]
+      },
+      csspub: {
+        src: [
+          'publish/<%= project.name %>/css/*.css'
+        ]
+      },
+      fontspub: {
+        src: [
+          'publish/<%= project.name %>/fonts/**/*.{eot,svg,ttf,woff}'
+        ]
+      },
+      allpub: {
+        src: [
+          'publish/<%= project.name %>/images/**/*.{jpg,jpeg,gif,png,webp}',
+          'publish/<%= project.name %>/css/*.css',
+          'publish/<%= project.name %>/js/*.js',
+          'publish/<%= project.name %>/fonts/**/*.{eot,svg,ttf,woff}'
+        ]
+      },
+    },
+
+    // https://github.com/yeoman/grunt-usemin
+    
+    usemin: {
+      //为避免错漏尽量不要在JS中操作路径下的图片文件，文件版本名称改变同步比较严格，注意()
+      html: 'rev/<%= project.name %>/**/*.html',
+      css: 'rev/<%= project.name %>/css/*.css',
+      js: 'rev/<%= project.name %>/js/*.js',
+      options: {
+        assetsDirs: ['rev/<%= project.name %>', 'rev/<%= project.name %>/images', 'rev/<%= project.name %>/fonts', 'rev/<%= project.name %>/js', 'rev/<%= project.name %>/css'],
+        patterns: {
+          js: [
+            [/(images\/([\w\/-]+)*[a-zA-Z0-9_\-\u4e00-\u9fa5]+\.(jpg|png|jpeg|gif|webp|svg))/g, 'Replacing reference to revved image filename in JS file'],
+          ],
+        }
+      }
+
+    },
+
+
+    // https://www.npmjs.com/package/grunt-cdn (使用grunt-filerev-replace-cdn有问题)
+    // Replace references to the images in the compiled js and css files, and the html views 
+    
+    /*
+    filerev_replace: {
+      options: {
+        assets_root: 'cdn/<%= project.name %>/',
+        cdn_url: '',  // CDN url, leave blank for no url; 
+      },
+      compiled_assets: {
+        src: 'cdn/<%= project.name %>/compiled/*.{css,js}'
+      },
+      views: {
+        options: {
+          views_root: 'cdn/<%= project.name %>/'
+        },
+        src: 'cdn/<%= project.name %>/*.html'
+      }
+    },
+    */
+    cdn: {
+      // grunt-cdn不支持类型：.js - js文件内的图片路径不进行替换，可搭配其他npm package完成js内文件替换
+      options: {
+          /** @required - root URL of your CDN (may contains sub-paths as shown below) */
+          cdn: 'http://game.feiliu.com/static/<%= project.name %>/',
+          /** @optional  - if provided both absolute and relative paths will be converted */
+          flatten: true,
+          /** @optional  - if provided will be added to the default supporting types */
+          supportedTypes: { 'phtml': 'html' }
+      },
+      dist: {
+          /** @required  - gets sources here, may be same as dest  */
+          cwd: 'cdn/<%= project.name %>/',
+          /** @required  - puts results here with respect to relative paths  */
+          dest: 'cdn/<%= project.name %>/',
+          /** @required  - files to process */
+          src: ['index.html', 'css/*.css', 'js/*.js', '{,*/}*.html', '{,**/}*.html'],
+      }
+    },
+
+    // https://www.npmjs.com/package/grunt-replace
+    // https://www.npmjs.com/package/grunt-text-replace
+    
+
 
   });
 
@@ -726,15 +967,26 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-imagemin');
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-less');
-  // grunt.loadNpmTasks('grunt-contrib-requirejs');
+  
   grunt.loadNpmTasks('grunt-contrib-sass');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-html-build');
-  // grunt.loadNpmTasks('grunt-usemin');
 
+  grunt.loadNpmTasks('grunt-filerev');
+  grunt.loadNpmTasks('grunt-usemin');
+  grunt.loadNpmTasks('grunt-cdn');
 
-  // Default task(s). 需要后台继续开发，为便于后台开发嵌套数据，不进行重度压缩
+  grunt.loadNpmTasks('grunt-contrib-requirejs');
+
+  // http://qunitjs.com/
+  // https://github.com/jquery/qunit
+  // http://qunitjs.com/cookbook/
+  // grunt.loadNpmTasks('qunitjs');
+
+  /* no revision tasks - watch and publish start */
+
+  // Default task(s). 需要后台继续开发，为便于后台开发嵌套数据，不进行重度压缩  生成到dist+publish+zip目录
   grunt.registerTask('default', ['jshint:dev', 'clean:main', 'compass:dev', 'concat:js', 'concat:css', 'cssmin:all', 'uglify:beautify', 'imagemin:dynamic', 'copy:cssmin', 'copy:jslib', 'copy:somejs', 'copy:html', 'copy:image', 'compress:main']);
 
   //js独立，不合并
@@ -746,8 +998,12 @@ module.exports = function(grunt) {
   // 静态不压图任务，适用于:html，js无动态数据，或已用Ajax实现，不需要后台继续开发 + 不处理图片
   grunt.registerTask('noimgstatic', ['jshint:dev', 'clean:main', 'compass:dev', 'concat:js', 'concat:css', 'cssmin:all', 'uglify:beautify', 'copy:cssmin', 'copy:jslib', 'copy:somejs', 'htmlbuild:dev', 'copy:html', 'htmlmin:release', 'copy:allimg', 'compress:main']);
 
-  // 动态不压图不压html任务，适用于有动态数据需要后台继续开发 + 不压html,js且不处理图片
+  // 动态不压图不压html任务，适用于有动态数据需要后台继续开发 + 不压html,js且不处理图片, js保留注释
   grunt.registerTask('noimgdynamic', ['jshint:dev', 'clean:main', 'compass:dev', 'concat:js', 'concat:css', 'cssmin:all', 'copy:cssmin', 'copy:jslib', 'copy:mainjs', 'htmlbuild:dev', 'copy:htmlpub', 'copy:allimg', 'compress:main']);
+
+  // 动态不压图不压html任务，适用于有动态数据需要后台继续开发 + 不压html,js且不处理图片， js删除注释
+  grunt.registerTask('noimgcomdynamic', ['jshint:dev', 'clean:main', 'compass:dev', 'concat:js', 'concat:css', 'cssmin:all', 'uglify:beautify', 'copy:cssmin', 'copy:jslib', 'copy:somejs', 'htmlbuild:dev', 'copy:htmlpub', 'copy:allimg', 'compress:main']);
+
   
   //监视实时刷新
   grunt.registerTask('mylivedev', ['connect:server', 'watch:livereload']);
@@ -755,5 +1011,24 @@ module.exports = function(grunt) {
   //重新发布
   grunt.registerTask('pubdev', ['clean:release', 'copy:cssmin', 'copy:jslib', 'copy:somejs', 'copy:html', 'copy:image', 'compress:main']);
 
+  /* no revision tasks - watch and publish end */
 
+  /* usemin revision only start */
+
+  // usemin default:build all css/js/images/fonts  生成到rev+zip目录
+  grunt.registerTask('revbuild', ['clean:rev', 'copy:htmlrev', 'copy:jslibrev', 'useminPrepare', 'concat:generated', 'cssmin:generated', 'uglify:generated', 'imagemin:dynamicrev', 'filerev:all', 'usemin', 'compress:rev']);
+
+  grunt.registerTask('revbuildcss', ['clean:rev', 'copy:htmlrev', 'copy:jslibrev', 'useminPrepare', 'concat:generated', 'cssmin:generated', 'uglify:generated', 'imagemin:dynamicrev', 'filerev:css','usemin', 'compress:rev']);
+
+  grunt.registerTask('revbuildjs', ['clean:rev', 'copy:htmlrev', 'copy:jslibrev', 'useminPrepare', 'concat:generated', 'cssmin:generated', 'uglify:generated', 'imagemin:dynamicrev', 'filerev:js', 'usemin', 'compress:rev']);
+
+  grunt.registerTask('revbuildfonts', ['clean:rev', 'copy:htmlrev', 'copy:jslibrev', 'useminPrepare', 'concat:generated', 'cssmin:generated', 'uglify:generated', 'imagemin:dynamicrev', 'filerev:fonts', 'usemin', 'compress:rev']);
+
+  /* usemin revision only end */
+
+  grunt.registerTask('cdnbuild', ['clean:cdn', 'copy:maincdn', 'cdn', 'compress:cdn']);
+
+
+
+  /* http://www.zhihu.com/question/21917526 */
 };
